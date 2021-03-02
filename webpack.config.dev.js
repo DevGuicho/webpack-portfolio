@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractCssPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const Dotenv = require("dotenv-webpack");
 
 /** @type {import('webpack').Configuration} */
@@ -14,7 +15,7 @@ module.exports = {
     assetModuleFilename: "assets/images[hash][ext][query]",
   },
   mode: "development",
-  watch: true,
+  devtool: "source-map",
   resolve: {
     extensions: [".js"],
     alias: {
@@ -74,6 +75,13 @@ module.exports = {
         },
       ],
     }),
+    new BundleAnalyzerPlugin(),
     new Dotenv(),
   ],
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    historyApiFallback: true,
+    port: 3000,
+  },
 };
